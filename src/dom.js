@@ -4,6 +4,7 @@ const game = new GameController();
 
 const playerBoardDiv = document.getElementById("player-board");
 const enemyBoardDiv = document.getElementById("enemy-board");
+const statusDiv = document.getElementById("status");
 
 export function renderBoards() {
   renderBoard(playerBoardDiv, game.player1.board, false);
@@ -24,7 +25,10 @@ function renderBoard(container, board, isEnemy) {
         cell.addEventListener("click", () => {
           //   console.log("clicked", x, y);
           //   console.log([...board.missedAttacks]);
-          if (game.isGameOver()) return;
+          if (game.isGameOver()) {
+            statusDiv.textContent = "Game Over! You Win 🎉";
+          }
+
           game.playTurn([x, y]);
           renderBoards();
         });
@@ -54,6 +58,11 @@ function renderBoard(container, board, isEnemy) {
 
       if (isHit) {
         cell.style.backgroundColor = "red";
+      }
+      if (game.isGameOver()) {
+        if (game.currentPlayer.type === "computer") {
+          statusDiv.textContent = "Computer Wins 💻";
+        }
       }
 
       container.appendChild(cell);

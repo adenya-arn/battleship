@@ -6,17 +6,18 @@ class GameController {
     this.player2 = new Player("computer");
 
     ///////////////////Temporaryships to check if dom is working
-    this.player1.board.placeShip([
-      [0, 0],
-      [0, 1],
-      [0, 2],
-    ]);
-    this.player2.board.placeShip([
-      [3, 3],
-      [3, 4],
-      [7, 7],
-    ]);
-
+    // this.player1.board.placeShip([
+    //   [0, 0],
+    //   [0, 1],
+    //   [0, 2],
+    // ]);
+    // this.player2.board.placeShip([
+    //   [3, 3],
+    //   [3, 4],
+    //   [7, 7],
+    // ]);
+    this.player1.board.placeShipRandomly();
+    this.player2.board.placeShipRandomly();
     this.currentPlayer = this.player1;
     this.enemy = this.player2;
   }
@@ -32,11 +33,13 @@ class GameController {
   }
 
   playTurn(coord) {
-    this.currentPlayer.attack(this.enemy.board, coord);
+    const result = this.currentPlayer.attack(this.enemy.board, coord);
 
     if (this.isGameOver()) return;
 
-    this.switchTurn();
+    if (result === "miss") {
+      this.switchTurn();
+    }
 
     if (this.currentPlayer.type === "computer") {
       const move = this.currentPlayer.getRandomMove();
@@ -44,7 +47,7 @@ class GameController {
       //to avoid deep recusion:
       setTimeout(() => {
         this.playTurn(move);
-      }, 0);
+      }, 300);
     }
   }
 

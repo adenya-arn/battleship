@@ -8,7 +8,7 @@ class Player {
   }
 
   attack(enemyBoard, coord) {
-    enemyBoard.receiveAttack(coord);
+    return enemyBoard.receiveAttack(coord);
   }
 
   getRandomMove() {
