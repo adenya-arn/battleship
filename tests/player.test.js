@@ -21,7 +21,7 @@ test("computer makes a valid move", () => {
   const computer = new Player("computer");
   const enemy = new Player();
 
-  const move = computer.getRandomMove();
+  const move = computer.getMove();
 
   expect(move.length).toBe(2);
 });

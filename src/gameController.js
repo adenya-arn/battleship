@@ -1,7 +1,7 @@
 import Player from "./player.js";
 
 class GameController {
-  constructor() {
+  constructor(autoPlace = true) {
     this.player1 = new Player("human");
     this.player2 = new Player("computer");
 
@@ -16,8 +16,11 @@ class GameController {
     //   [3, 4],
     //   [7, 7],
     // ]);
-    this.player1.board.placeShipRandomly();
-    this.player2.board.placeShipRandomly();
+
+    if (autoPlace) {
+      this.player1.board.placeShipRandomly();
+      this.player2.board.placeShipRandomly();
+    }
     this.currentPlayer = this.player1;
     this.enemy = this.player2;
   }
@@ -35,21 +38,30 @@ class GameController {
   playTurn(coord) {
     const result = this.currentPlayer.attack(this.enemy.board, coord);
 
-    if (this.isGameOver()) return;
+    if (this.isGameOver()) return result;
 
-    if (result === "miss") {
+    if (result !== "hit") {
       this.switchTurn();
     }
 
+    // if (this.currentPlayer.type === "human") {
+    //   this.switchTurn();
+
     if (this.currentPlayer.type === "computer") {
-      const move = this.currentPlayer.getRandomMove();
+      const move = this.currentPlayer.getMove();
 
       //to avoid deep recusion:
       setTimeout(() => {
-        this.playTurn(move);
-      }, 300);
+        const result = this.playTurn(move);
+
+        if (result === "hit") {
+          this.currentPlayer.hitStack.push(move);
+        }
+      }, 0);
+      return;
     }
   }
+  // }
 
   isGameOver() {
     return this.enemy.board.allShipsSunk();

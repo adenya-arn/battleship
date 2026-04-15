@@ -18,19 +18,22 @@ test("switches turns", () => {
 });
 
 test("player attacks enemy board", () => {
-  const game = new GameController();
+  const game = new GameController(false);
 
-  game.enemy.board.placeShip([[1, 1]]);
+  game.player2.board.placeShip([[1, 1]]);
 
   game.playTurn([1, 1]);
 
-  expect(game.enemy.board.ships[0].ship.hits).toBe(1);
+  expect(game.player2.board.ships[0].ship.hits).toBe(1);
 });
 
 test("game ends when all ships sunk", () => {
-  const game = new GameController();
+  const game = new GameController(false);
 
-  game.enemy.board.placeShip([[1, 1]]);
+  game.player2.board.placeShip([[1, 1]]);
+
+  game.currentPlayer = game.player1;
+  game.enemy = game.player2;
 
   game.playTurn([1, 1]);
 

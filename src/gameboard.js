@@ -35,7 +35,7 @@ class GameBoard {
         if (
           obj.hits.some((hit) => hit[0] === coord[0] && hit[1] === coord[1])
         ) {
-          return "repeat";
+          return "already-hit";
         }
         obj.hits.push(coord);
         obj.ship.hit();
