@@ -5,22 +5,10 @@ class GameController {
     this.player1 = new Player("human");
     this.player2 = new Player("computer");
 
-    ///////////////////Temporaryships to check if dom is working
-    // this.player1.board.placeShip([
-    //   [0, 0],
-    //   [0, 1],
-    //   [0, 2],
-    // ]);
-    // this.player2.board.placeShip([
-    //   [3, 3],
-    //   [3, 4],
-    //   [7, 7],
-    // ]);
-
     if (autoPlace) {
-      this.player1.board.placeShipRandomly();
       this.player2.board.placeShipRandomly();
     }
+
     this.currentPlayer = this.player1;
     this.enemy = this.player2;
   }
@@ -38,30 +26,34 @@ class GameController {
   playTurn(coord) {
     const result = this.currentPlayer.attack(this.enemy.board, coord);
 
+    // 🔥 store reference BEFORE anything changes
+    const actingPlayer = this.currentPlayer;
+
     if (this.isGameOver()) return result;
 
-    if (result !== "hit") {
+    // 🧠 AI memory (ONLY for computer)
+    if (result === "hit" && actingPlayer.type === "computer") {
+      actingPlayer.hitStack.push(coord);
+    }
+
+    // 🔁 Switch turn ONLY on miss
+    if (result === "miss") {
       this.switchTurn();
     }
 
-    // if (this.currentPlayer.type === "human") {
-    //   this.switchTurn();
-
+    // 🤖 Computer plays automatically
     if (this.currentPlayer.type === "computer") {
       const move = this.currentPlayer.getMove();
 
-      //to avoid deep recusion:
       setTimeout(() => {
-        const result = this.playTurn(move);
-
-        if (result === "hit") {
-          this.currentPlayer.hitStack.push(move);
+        if (!this.isGameOver()) {
+          this.playTurn(move);
         }
-      }, 0);
-      return;
+      }, 300);
     }
+
+    return result; // ✅ ALWAYS return
   }
-  // }
 
   isGameOver() {
     return this.enemy.board.allShipsSunk();

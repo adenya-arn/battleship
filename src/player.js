@@ -25,8 +25,9 @@ class Player {
   //   return move;
   // }
   getMove() {
-    if (this.hitStack.length > 0) {
+    while (this.hitStack.length > 0) {
       const [x, y] = this.hitStack[0];
+
       const directions = [
         [x + 1, y],
         [x - 1, y],
@@ -37,14 +38,15 @@ class Player {
       for (let move of directions) {
         const [mx, my] = move;
 
+        const key = move.toString();
         if (
           mx >= 0 &&
           mx < 8 &&
           my >= 0 &&
           my < 8 &&
-          !this.previousMoves.has(move.toString())
+          !this.previousMoves.has(key)
         ) {
-          this.previousMoves.add(move.toString());
+          this.previousMoves.add(key);
           return move;
         }
       }
