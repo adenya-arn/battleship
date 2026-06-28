@@ -1,3 +1,4 @@
+import { test, expect } from "@jest/globals";
 import Player from "../src/player.js";
 
 test("Player has a gameboard", () => {

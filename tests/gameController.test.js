@@ -1,4 +1,5 @@
 import GameController from "../src/gameController";
+import { test, expect } from "@jest/globals";
 
 test("game initializes with two players", () => {
   const game = new GameController();

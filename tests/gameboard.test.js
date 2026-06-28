@@ -1,4 +1,5 @@
 import GameBoard from "../src/gameboard.js";
+import { test, expect } from "@jest/globals";
 
 test("records a missed attack", () => {
   const board = new GameBoard();
